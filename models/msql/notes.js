@@ -31,7 +31,7 @@ await connection.query(`
   `)
 
 export class NoteModel {
-  static async gatAll () {
+  static async getAll () {
     const [notas] = await connection.query('SELECT titulo, contenido FROM notes')
     return notas
   }
@@ -39,17 +39,13 @@ export class NoteModel {
   static async create ({ input }) {
     const { titulo, contenido } = input
     try {
-      await connection.query(
-        'INSERT INTO notes (titulo, contenido) ?', [titulo, contenido]
+      const [newNota] = await connection.query(
+        'INSERT INTO notes (titulo, contenido) VALUES (?,?);', [titulo, contenido]
       )
+      input.id = newNota.insertId
+      return (input)
     } catch (error) {
       throw new Error('Error creating note')
     }
-
-    const [movies] = await connection.query(
-        `SELECT title, year, director, duration, poster, rate, BIN_TO_UUID(id) id
-          FROM movie WHERE id = UUID_TO_BIN(?);`,
-        [uuid]
-    )
   }
 }

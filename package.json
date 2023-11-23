@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start:myql": "node --watch server-with-mysql.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
