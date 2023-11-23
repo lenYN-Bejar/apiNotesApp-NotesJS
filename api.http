@@ -1,0 +1,13 @@
+###
+GET http://localhost:1234/notes
+
+###
+
+POST http://localhost:1234/notes
+Content-Type: application/json
+
+{
+    "sql": "oaaoeuaoeu",
+    "titulo": "Segunda Nota",
+    "contenido": "Contenido de la segunda Nota"
+}
