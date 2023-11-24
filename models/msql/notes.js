@@ -17,14 +17,14 @@ await connection.query('DROP TABLE IF EXISTS notes')
 await connection.query(`
     CREATE TABLE IF NOT EXISTS notes (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      titulo VARCHAR(50) NOT NULL,
-      contenido TEXT NOT NULL
+      title VARCHAR(50) NOT NULL,
+      description TEXT NOT NULL
     )
   `)
 
 // Insertar datos de ejemplo
 await connection.query(`
-    INSERT INTO notes (titulo, contenido) VALUES
+    INSERT INTO notes (title, description) VALUES
     ('Nota 1', 'Contenido de la nota 1'),
     ('Nota 2', 'Contenido de la nota 2'),
     ('Nota 3', 'Contenido de la nota 3')
@@ -32,20 +32,39 @@ await connection.query(`
 
 export class NoteModel {
   static async getAll () {
-    const [notas] = await connection.query('SELECT titulo, contenido FROM notes')
+    const [notas] = await connection.query('SELECT id, title, description FROM notes')
     return notas
   }
 
   static async create ({ input }) {
-    const { titulo, contenido } = input
+    const { title, description } = input
     try {
       const [newNota] = await connection.query(
-        'INSERT INTO notes (titulo, contenido) VALUES (?,?);', [titulo, contenido]
+        'INSERT INTO notes (title, description) VALUES (?,?);', [title, description]
       )
       input.id = newNota.insertId
       return (input)
     } catch (error) {
       throw new Error('Error creating note')
     }
+  }
+
+  static async update ({ id, input }) {
+    const { title, description } = input
+    try {
+      const [newNota] = await connection.query(
+        'UPDATE notes SET title=?, description=? WHERE id=?',
+        [title, description, id]
+      )
+      console.log(newNota)
+      return newNota
+    } catch (error) {
+      throw new Error('Error creating note')
+    }
+  }
+
+  static async delete ({ id }) {
+    const [result] = await connection.query('DELETE FROM notes WHERE id=?', [id])
+    return result
   }
 }

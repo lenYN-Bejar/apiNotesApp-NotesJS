@@ -8,6 +8,20 @@ Content-Type: application/json
 
 {
     "sql": "oaaoeuaoeu",
-    "titulo": "Segunda Nota",
-    "contenido": "Contenido de la segunda Nota"
+    "title": "Segunda Nota",
+    "description": "Contenido de la segunda Nota"
+}
+
+###
+
+DELETE http://localhost:1234/notes/2
+
+###
+
+PATCH http://localhost:1234/notes/1
+Content-Type: application/json
+
+{
+    "sql": "oaaoeuaoeu",
+    "title": "New Title",
 }

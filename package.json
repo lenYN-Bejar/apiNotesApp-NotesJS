@@ -15,14 +15,12 @@
     "standard": "^17.1.0"
   },
   "dependencies": {
+    "cors": "2.8.5",
     "express": "4.18.2",
     "mysql2": "3.6.3",
     "zod": "3.22.4"
   },
   "eslintConfig": {
     "extends": "standard"
-  },
-  "engines": {
-    "node": "20.9.0"
   }
 }
