@@ -37,10 +37,10 @@ export class NoteModel {
   }
 
   static async create ({ input }) {
-    const { title, description } = input
+    // const { title, description } = input
     try {
       const [newNota] = await connection.query(
-        'INSERT INTO notes (title, description) VALUES (?,?);', [title, description]
+        'INSERT INTO notes SET ?', [input]
       )
       input.id = newNota.insertId
       return (input)
@@ -50,16 +50,19 @@ export class NoteModel {
   }
 
   static async update ({ id, input }) {
-    const { title, description } = input
+    // const { title, description } = input
     try {
-      const [newNota] = await connection.query(
-        'UPDATE notes SET title=?, description=? WHERE id=?',
-        [title, description, id]
+      const [noteUpdate] = await connection.query(
+        'UPDATE notes SET ? WHERE id=?', [input, id]
       )
-      console.log(newNota)
-      return newNota
+      if (noteUpdate.affectedRows > 0) {
+        const [searchNoteUpdate] = await connection.query(
+          'SELECT id,title,description FROM notes WHERE id=?', [id]
+        )
+        return searchNoteUpdate[0]
+      }
     } catch (error) {
-      throw new Error('Error creating note')
+      throw new Error('Error updating note')
     }
   }
 
@@ -68,3 +71,16 @@ export class NoteModel {
     return result
   }
 }
+
+// static async create ({ input }) {
+//   const { title, description } = input
+//   try {
+//     const [newNota] = await connection.query(
+//       'INSERT INTO notes (title, description) VALUES (?,?);', [title, description]
+//     )
+//     input.id = newNota.insertId
+//     return (input)
+//   } catch (error) {
+//     throw new Error('Error creating note')
+//   }
+// }
